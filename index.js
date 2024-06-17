@@ -10,6 +10,8 @@ const fs = require('fs');
 app.use(express.urlencoded({ extended: true})) //using Express.js's built in body parser middleware
 app.use(express.json()); //gives access to the req.body method when user gives us a request
 
+app.use(express.static('../styles'));
+
 app.engine('perscholas', (filePath, options, callback) => {
     fs.readFile(filePath, (err, content) => {
       if (err) return callback(err);
@@ -110,8 +112,9 @@ app.get('/', (req, res) => {
   });
 
 app.use((req, res) =>{
-    res.status(404).send('Resource Not Found');
+    res.status(404).send('Error 404: Resource Not Found');
 })
+
 
 app.listen(PORT, () => {
     console.log('Server running on port: ' + PORT);
