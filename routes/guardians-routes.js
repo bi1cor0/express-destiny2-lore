@@ -1,12 +1,12 @@
 const express = require('express')
-const router = express.Router();
-const guardians = require('../data/guardian-names.js');
+const router = express.Router(); //setting up variable to do router things
+const guardians = require('../data/guardian-names.js'); //importing data from guardian-names file in the data folder
 
 
-router.get('/', (req, res) => {
-    res.json(guardians)
+router.get('/', (req, res) => { //setting up GET method for the guardians route
+    res.json(guardians) //print out guardians json data
 })
-router.get("/:id", (req, res, next) => {
+router.get("/:id", (req, res, next) => { 
    const guardOC = guardians.find((g) => g.id == req.params.id)
    if(guardOC) {
     res.json(guardOC);

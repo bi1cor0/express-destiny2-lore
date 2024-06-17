@@ -1,16 +1,16 @@
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
-const guardRouter = require('./routes/guardians-routes.js');
-const exoRouter = require('./routes/exotics-routes.js');
-const npcRouter = require('./routes/npc-routes.js');
-const fs = require('fs');
+const express = require('express'); //importing express libraries to this project.
+const app = express(); //setting up variable to manipulate and use express libraries
+const PORT = process.env.PORT || 3000; //setting up PORT value
+const guardRouter = require('./routes/guardians-routes.js'); //importing guardian routes from the routes folder
+const exoRouter = require('./routes/exotics-routes.js'); //importing exotic weapon routes from route folder
+const npcRouter = require('./routes/npc-routes.js'); //importing npc routes from route folder
+const fs = require('fs'); //importing fs library into a variable
 
 
 app.use(express.urlencoded({ extended: true})) //using Express.js's built in body parser middleware
 app.use(express.json()); //gives access to the req.body method when user gives us a request
 
-app.use(express.static('../styles'));
+app.use(express.static('styles')); //linking up static files is not really applying my styles. Everything should be right, but I'm not sure what's going on. 
 
 app.engine('perscholas', (filePath, options, callback) => {
     fs.readFile(filePath, (err, content) => {
@@ -27,11 +27,10 @@ app.engine('perscholas', (filePath, options, callback) => {
     });
   });
 
-  app.set('views', './views');
-// telling express the default view engine
-app.set('view engine', 'perscholas');
+app.set('views', './views'); //getting views folder and it's contents. 
+app.set('view engine', 'perscholas'); //calling the use of the view engine
 
-app.use((req, res, next) => {
+app.use((req, res, next) => { //setting up logging middleware to log all CRUD requests
     const time = new Date();
   
     console.log(
@@ -52,7 +51,7 @@ app.use('/api/guardians', guardRouter)
 app.use('/api/exotics', exoRouter)
 app.use('/api/npc', npcRouter)
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => { //setting up a welcoming message for the main page using an object that will directly pass through the view engine. 
     const options = {
       title: 'Submit your own Destiny 2 Guardian Character!',
       content:
@@ -66,7 +65,7 @@ app.get('/', (req, res) => {
   });
 
   
-  // Adding some HATEOAS links.
+  // Adding some HATEOAS links just for extra CRUD requirements
   app.get('/api', (req, res) => {
     res.json({
       links: [
@@ -94,7 +93,7 @@ app.get('/', (req, res) => {
     });
   });
 
-  app.get('/guardians/new', (req, res) => {
+  app.get('/guardians/new', (req, res) => { //form set up for a different route for new guardian characters
     res.send(`
         <div> 
           <h1>Create a Guardian Character</h1>
@@ -103,7 +102,7 @@ app.get('/', (req, res) => {
             Race: <input type="text" name="race" /> <br />
             Class: <input type="text" name="class" /> <br />
             Subclass: <input type="text" name="subclass" /> <br />
-            Class: <input type="text" name="role" /> <br />
+            Role: <input type="text" name="role" /> <br />
             Primary Color: <input type="text" name="primary_color" /> <br />
             <input type="submit" value="Submit Guardian Character" />
           </form>
@@ -111,11 +110,11 @@ app.get('/', (req, res) => {
       `);
   });
 
-app.use((req, res) =>{
+app.use((req, res) =>{ //small middleware for error handling
     res.status(404).send('Error 404: Resource Not Found');
 })
 
 
-app.listen(PORT, () => {
+app.listen(PORT, () => { //server start method
     console.log('Server running on port: ' + PORT);
   });
