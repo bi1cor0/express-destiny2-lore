@@ -23,7 +23,7 @@ const guardians = [
         race: 'Human',
         class: 'Warlock',
         subclass: 'Voidwalker',
-        role: 'Damage/Support',
+        role: 'Damage and Support',
         primary_color: 'Evergreen'
     }
 ];
