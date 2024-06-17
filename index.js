@@ -3,8 +3,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const guardRouter = require('./routes/guardians-routes.js');
 const exoRouter = require('./routes/exotics-routes.js');
+const npcRouter = require('./routes/npc-routes.js');
 
-const npcS = require('./data/npcs.js');
 
 app.use(express.urlencoded({ extended: true})) //using Express.js's built in body parser middleware
 app.use(express.json()); //gives access to the req.body method when user gives us a request
@@ -23,14 +23,12 @@ app.use((req, res, next) => {
     next();
   });
 
-//API key middleware
-const apiKeys = ['perscholas', 'ps-example', 'hJAsknw-L198sAJD-l3kasx'];
-
 
 
 //Connecting to the router files by using the address extensions.
 app.use('/api/guardians', guardRouter)
 app.use('/api/exotics', exoRouter)
+app.use('/api/npc', npcRouter)
 
 
 app.get('/', (req, res) => {
