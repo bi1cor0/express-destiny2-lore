@@ -5,12 +5,12 @@ const guardRouter = require('./routes/guardians-routes.js'); //importing guardia
 const exoRouter = require('./routes/exotics-routes.js'); //importing exotic weapon routes from route folder
 const npcRouter = require('./routes/npc-routes.js'); //importing npc routes from route folder
 const fs = require('fs'); //importing fs library into a variable
-
+const path = require('path'); //importing a path library into a variable
 
 app.use(express.urlencoded({ extended: true})) //using Express.js's built in body parser middleware
 app.use(express.json()); //gives access to the req.body method when user gives us a request
 
-app.use(express.static('styles')); //linking up static files is not really applying my styles. Everything should be right, but I'm not sure what's going on. 
+app.use(express.static(path.join(__dirname,'/styles'))); //fixed stylesheets using .join method
 
 app.engine('perscholas', (filePath, options, callback) => {
     fs.readFile(filePath, (err, content) => {
