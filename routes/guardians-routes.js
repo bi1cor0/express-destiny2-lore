@@ -1,12 +1,12 @@
 const express = require('express')
-const router = express.Router;
+const router = express.Router();
 const guardians = require('../data/guardian-names.js');
 
 
 router.get('/', (req, res) => {
     res.json(guardians)
 })
-router.get("/api/guardians/:id", (req, res, next) => {
+router.get("/:id", (req, res, next) => {
    const guardOC = guardians.find((g) => g.id == req.params.id)
    if(guardOC) {
     res.json(guardOC);

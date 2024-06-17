@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const guardRouter = require('./routes/guardians-routes.js');
+const exoRouter = require('./routes/exotics-routes.js');
 
 const npcS = require('./data/npcs.js');
 
@@ -20,14 +22,56 @@ app.use((req, res, next) => {
     }
     next();
   });
+
+//API key middleware
+const apiKeys = ['perscholas', 'ps-example', 'hJAsknw-L198sAJD-l3kasx'];
+
+
+
+//Connecting to the router files by using the address extensions.
+app.use('/api/guardians', guardRouter)
+app.use('/api/exotics', exoRouter)
+
+
+app.get('/', (req, res) => {
+    res.json({
+      links: [
+        {
+          href: '/api',
+          rel: 'api',
+          type: 'GET',
+        },
+      ],
+    });
+  });
   
-
-
-app.get("/", (req, res) => {
-    console.log("Hello it's working!")
-    res.send("Hello we're here now")
-})
-
+  // Adding some HATEOAS links.
+  app.get('/api', (req, res) => {
+    res.json({
+      links: [
+        {
+          href: 'api/guardians',
+          rel: 'guardians',
+          type: 'GET',
+        },
+        {
+          href: 'api/guardians',
+          rel: 'guardians',
+          type: 'POST',
+        },
+        {
+          href: 'api/exotics',
+          rel: 'exotics',
+          type: 'GET',
+        },
+        {
+          href: 'api/exotics',
+          rel: 'exotics',
+          type: 'POST',
+        },
+      ],
+    });
+  });
 app.use((req, res) =>{
     res.status(404).send('Resource Not Found');
 })
